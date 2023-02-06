@@ -47,3 +47,11 @@
 .canvas{
     width: 100%;
 }
+
+/*ipad*/
+@media screen and (min-width:768px) and (max-width:1023px) {
+    
+    .canvas{
+        width: 80%;
+    }
+}
