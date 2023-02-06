@@ -1,0 +1,49 @@
+.top{
+    padding: var(--sidePadding);
+    padding-top: 30px;
+    margin-bottom: 30px;
+    max-height: 75px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.question,.score{
+    font-size: 36px;
+    border-radius: 10px;
+    padding: var(--sidePadding);
+    height: var(--fullsize);
+    background-color: var(--gameTopBackground);
+}
+
+.score{
+    display: flex;
+    padding: 0px;
+    justify-content: flex-end;
+}
+
+.score-count,.point{
+    padding: 0px 10px;
+}
+
+.point{
+    border-radius: 10px;
+    background-color: var(--pointBackground);
+}
+
+.game{
+    position: relative;
+    width: var(--fullsize);
+    height: var(--fullsize);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    padding: var(--sidePadding);
+}
+
+/*add here for more code*/
+
+.canvas{
+    width: 100%;
+}
