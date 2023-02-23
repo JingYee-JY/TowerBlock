@@ -28,8 +28,22 @@ const words1 = document.getElementById("words1")
 const words2 = document.getElementById("words2")
 const scoreText = document.getElementById("scoreText")
 
+//use this for selection page
+const levelButtons = document.querySelectorAll(".levelButton");
+const selectionPage = document.getElementById("selectionPage");
+
+//here for selection page
+let levelIndex;
+
+//here for level buttons condition
+const levels = [
+    //example of catch the flower game
+    {winCondition:5, dropSpeed:2},
+    {winCondition:10, dropSpeed:5},
+    {winCondition:20, dropSpeed:10}
+]
+
 let current;
-let addscore = 1
 let total = 5;
 let score;
 
@@ -37,20 +51,23 @@ let tempoArray = [];
 
 let scrollCounter, cameraY, mode, xSpeed;
 let ySpeed = 3;
-let height = 80;
+let height = 50;
 let boxes = [];
-
-let blockMovement;
 
 boxes[0] = {
     x: 100,
-    y: 330,
+    y: 300,
     width: 400
 };
 let debris = {
     x: 200,
     width: 0
 };
+
+let answer = {answer:"C", image: "./img/correct.png"}
+
+//here is answerBtn user can select
+const answerBtn = document.querySelectorAll(".answerBtn");
 
 //here is finalV2
 const group1 = document.querySelector(".group1");
@@ -59,6 +76,11 @@ play.addEventListener("click", () => {
     playClickSound()
     setTimeout(() => {
         startPage.classList.add("hide")
+        
+        //use this for selection page
+        //selectionPage.classList.remove("hide")
+        
+        //else
         instructionPage.classList.remove("hide")
     }, 200);
 })
@@ -71,6 +93,54 @@ start.addEventListener("click", () => {
         ready()
         Question()
     }, 200);
+})
+
+levelButtons.forEach(function(level){
+    level.addEventListener('click', () => {
+        playClickSound()
+        setTimeout(() => {
+            levelIndex = level.getAttribute("data-level") - 1
+            selectionPage.classList.add("hide")
+            instructionPage.classList.remove("hide")
+        }, 200);
+    })    
+})
+
+answerBtn.forEach(function(button){
+    button.addEventListener('click', () => {
+        playClickSound()
+        console.log(answer.image, answer.answer)
+
+        let data  = button.getAttribute("data")
+
+        popUp.classList.remove("hide")
+        
+        correctAnswer.src = answer.image
+
+        if(data == answer.answer){
+            mark.src = "./img/correct.png"
+            checkAnswer.textContent = "Correct!"
+            showAnswer.classList.add("hide")
+            score +=1
+            scoreCount.textContent = score;
+        }
+        else{
+            mark.src = "./img/wrong.png"
+            checkAnswer.textContent = "Good try!"
+            showAnswer.classList.remove("hide")
+        }
+        
+        setTimeout(function(){
+            popUp.classList.add("hide");
+            if(current == total){
+                gamePage.classList.add("hide")
+                endGame()
+            }
+            else{
+                Question()
+            }
+        }, 2000)
+    })    
 })
 
 again.addEventListener("click", () => {
@@ -134,20 +204,15 @@ function gameOver() {
 
 function animate() {
     if (mode != 'gameOver') {
+        console.log(canvas.height)
       context.clearRect(0, 0, canvas.width, canvas.height);
       for (let n = 0; n < boxes.length; n++) {
         let box = boxes[n];
-        //check if the box number is even
-        if(n % 2==0){
-            context.fillStyle = '#08AEAD';
-         }
-         //else the box number is odd
-         else {
-            context.fillStyle = '#2F3F90';
-         }
-        context.fillRect(box.x, 1250 - box.y + cameraY, box.width, height); 
+        context.fillStyle = 'rgb(' + n * 16 + ',' + n * 16 + ',' + n * 16 + ')';
+        context.fillRect(box.x, 1250 - box.y + cameraY, box.width, height);
+        console.log(box.width)      
       }
-      context.fillRect(debris.x, 1250 - height + cameraY, debris.width, height);
+      context.fillRect(debris.x, 1250 - debris.y + cameraY, debris.width, height);
       if (mode == 'bounce') {
         boxes[current].x = boxes[current].x + xSpeed;
         if (xSpeed > 0 && boxes[current].x + boxes[current].width > canvas.width)
@@ -156,14 +221,12 @@ function animate() {
           xSpeed = -xSpeed;
       }
       if (mode == 'fall') {
-        boxes[current].y = boxes[current].y - ySpeed;
+        //boxes[current].y = boxes[current].y - ySpeed;
         if (boxes[current].y == boxes[current - 1].y + height) {
           mode = 'bounce';
           let difference = boxes[current].x - boxes[current - 1].x;
           if (Math.abs(difference) >= boxes[current].width) {
-            window.cancelAnimationFrame(blockMovement);
             gameOver();
-            return
           }
           debris = {
             y: boxes[current].y,
@@ -182,11 +245,8 @@ function animate() {
           else
             xSpeed--;
           current++;
-          if(current > 8)
+          if(current > 10)
           scrollCounter = height;
-
-          score++;
-          scoreCount.innerHTML = score
           newBox();
         }
       }
@@ -196,7 +256,7 @@ function animate() {
         scrollCounter--;
       }
     }
-    blockMovement = window.requestAnimationFrame(animate);
+    window.requestAnimationFrame(animate);
   }
 
 function restart() {
@@ -211,8 +271,92 @@ function restart() {
 }
 
 function playClickSound(){
+    console.log(clickSound)
     clickSound.currentTime = 0
     clickSound.play()
+}
+
+function endGame(){
+    finalPage.classList.remove("hide")
+
+    let pass = total / 2
+
+    //this is for first version
+    if(current < 10){
+        lose.currentTime = 0
+        lose.play()
+        medal.classList.add("hidden")
+        scoreText.textContent = "You tried!"
+        words1.innerHTML = "Good try!"
+        words2.textContent = "do better next time"
+    }
+    else{
+        clap.currentTime = 0
+        clap.play() 
+        medal.classList.remove("hidden")
+        scoreText.textContent = "Good job!"
+        words1.innerHTML = `You got <br> ${current} blocks!`
+        words2.textContent = ""
+        setTimeout(function(){
+            confetti.start()
+            setTimeout(function(){
+                confetti.stop()
+            }, 2000)
+        }, 500)
+    }
+
+    //this is for second version
+    /*let starScore = total / 5;
+    //change the star image according the score;
+    if(score < pass){
+        lose.currentTime = 0
+        lose.play()
+        if(score == starScore + starScore)
+                medal.src = "./img/youTried.png"
+            else if(score < starScore + starScore && score >= starScore) // score < 2 && score >= 1
+                medal.src = "./img/youTried1.png"
+            else
+                medal.src = "./img/youTried2.png"
+
+        group1.classList.add("group1V2")
+        scoreText.textContent = "Good try!"
+        scoreText.classList.add("scoreTextV2")
+        words1.classList.add("words1V2")
+        words2.classList.add("words2V2")
+        words1.innerHTML = "Your score"
+    }
+    else{
+        clap.currentTime = 0
+        clap.play()
+        if(score == total) // score = 5
+            medal.src = "./img/excellent.png"
+        else if(score < total && score >= total - starScore) // score < 5 && score >= 4
+            medal.src = "./img/wellDone.png"
+        else if(score < total - starScore && score >= (total - starScore - starScore)) // score < 4 && score >= 3
+            medal.src = "./img/wellDone1.png"
+
+        group1.classList.add("group1V2")
+        words1.classList.add("words1V2")
+        words2.classList.add("words2V2")
+
+        scoreText.classList.add("scoreTextV2")
+
+        if(score == total){
+            scoreText.textContent = "Superstar!"
+        }
+        else{
+            scoreText.textContent = "Good try!"
+        }
+
+        setTimeout(function(){
+            confetti.start()
+            setTimeout(function(){
+                confetti.stop()
+            }, 2000)
+        }, 500)
+    }
+    words1.innerHTML = "Your score"
+    words2.textContent = score + "/" + total*/
 }
 
 canvas.onpointerdown = function() {
@@ -224,72 +368,7 @@ canvas.onpointerdown = function() {
     }
   };
 
-function endGame(){
-    finalPage.classList.remove("hide")
-
-    let pass = 5;
-
-    //this is for second version
-        //change the star image according the score;
-        if(score < pass * 3){
-            lose.currentTime = 0
-            lose.play()
-            if(score > pass * 2)
-                    medal.src = "./img/youTried.png"
-                else if(score > pass) // score < 2 && score >= 1
-                    medal.src = "./img/youTried1.png"
-                else
-                    medal.src = "./img/youTried2.png"
-        
-            group1.classList.add("group1V2")
-            scoreText.textContent = "Good try!"
-            scoreText.classList.add("scoreTextV2")
-            words1.classList.add("words1V2")
-            words2.classList.add("words2V2")
-            words1.innerHTML = "Your score"
-        }
-        else{
-            clap.currentTime = 0
-            clap.play()
-            if(score >= pass * 5) // score = 5
-                medal.src = "./img/excellent.png"
-            else if(score > pass * 4) // score < 5 && score >= 4
-                medal.src = "./img/wellDone.png"
-            else if(score > pass * 3) // score < 4 && score >= 3
-                medal.src = "./img/wellDone1.png"
-        
-            group1.classList.add("group1V2")
-            words1.classList.add("words1V2")
-            words2.classList.add("words2V2")
-        
-            scoreText.classList.add("scoreTextV2")
-        
-            if(score == total){
-                scoreText.textContent = "Superstar!"
-            }
-            else if(score > pass){
-                scoreText.textContent = "Well done!"
-            }
-            else{
-                scoreText.textContent = "Good try!"
-            }
-        
-            setTimeout(function(){
-                confetti.start()
-                setTimeout(function(){
-                    confetti.stop()
-                }, 2000)
-            }, 500)
-        }
-        words1.innerHTML = ""
-        words2.textContent = score + " LEVELS"
-}
-
 /*prevent double tag zoom*/
 document.addEventListener('dblclick', function(event) {
     event.preventDefault();
     }, { passive: false });
-
-/*prevent right click*/
-document.addEventListener('contextmenu', event =>
- event.preventDefault());

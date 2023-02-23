@@ -1,0 +1,61 @@
+/*add here for code changes*/
+
+/*Commonly Changed Items*/
+:root{
+    --backgroundColour:#92EFEA;
+    --buttonBackgroundColor:#014598;
+    --buttonTextColor:white;
+    --textDarkBlueColor:#014598;
+    --gameTopBackground: white;
+    --backgroundColour2:#08AEAD;
+    --scoreTextBackground:#FBCE59;
+    --pointBackground:#2F3F90;
+    --borderColor2:#2F3F90;
+    --finalPopUpBackground:white;
+}
+
+/*GamePage*/
+.top{
+    justify-content: center;
+}
+
+.score{
+    width: 30%;
+}
+
+.score-count{
+    color: var(--pointBackground);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.point{
+    color: var(--textWhiteColor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+.gamePage{
+    background: url("../img/background.png") bottom no-repeat;
+    background-size: 100% 100%;
+}
+.game{
+    position: absolute;
+    top: 0;
+    justify-content: flex-end;
+}
+.canvas{
+    width: 100%;
+}
+
+/*ipad*/
+@media screen and (min-width:768px) and (max-width:1023px) {
+    
+    .canvas{
+        width: 80%;
+    }
+}

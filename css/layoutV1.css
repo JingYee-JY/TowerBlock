@@ -3,28 +3,24 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
-
-body{
     font-family: 'Londrina Solid', cursive;
 }
 
 :root {
-    --topPadding: 20px 0px;
+    --topPadding: 30px 0px;
     --sidePadding:0px 30px;
     --padding:30px 30px;
     --popUpPadding:20px;
     --backgroundColour: #F1F1F1;
     --buttonBackgroundColor:#FBCE59;
-    --buttonTextColor:black;
+    --buttonTextColor:#FBCE59;
     --textBlackColor: black;
     --textWhiteColor: white;
     --fullsize: 100%;
     --instructionBackgroundColor: white;
     --gameTopBackground: #FBCE59;
     --pointBackground:blue;
-    --popUpBackground:rgba(217, 217, 217, 0.8);
-    --popUp:blue;
+    --popUpBackground:blue;
     --borderColor: black;
     --finalPopUpBackground:green;
     --scoreTextBackground: yellow;
@@ -40,7 +36,6 @@ body{
     height: var(--fullsize);
     overflow: hidden;
     position: fixed;
-    background-color: var(--backgroundColour);
 }
 
 .startPage,
@@ -58,7 +53,7 @@ body{
     justify-content: flex-start;
     flex-direction: column;
     z-index: 10;
-    gap: 25px;
+    gap: 50px;
     background-color: var(--backgroundColour);
 }
 
@@ -79,7 +74,8 @@ body{
     width: var(--fullsize);
     height: var(--fullsize);
     z-index: 9;
-    background-color: var(--backgroundColour);
+    background-color: pink;
+    /*background-color: var(--backgroundColour);*/
 }
 
 
@@ -90,8 +86,7 @@ body{
 }
 
 .title{
-    max-height: 95px;
-    width: auto;
+    max-height: 110px;
 }
 
 .hide{
@@ -110,7 +105,6 @@ body{
     font-size: 30px;
     border-radius: 20px;
     padding: 15px;
-    color: var(--buttonTextColor);
     background-color: var(--buttonBackgroundColor);
 }
 
@@ -128,7 +122,7 @@ body{
     flex-direction: column;
     gap: 10px;
     padding: var(--padding);
-    background-color: var(--popUp);
+    background-color: var(--popUpBackground);
     border: 15px solid var(--borderColor);
 }
 
@@ -147,61 +141,11 @@ body{
     width: var(--fullsize);
     border-radius: 20px;
     font-size: 26px;
-    font-family: 'Roboto', sans-serif !important;
     padding: var(--topPadding);
-    background-color: var(--instructionBackgroundColor);
-}
-
-/*GamePage*/
-.top{
-    padding: var(--sidePadding);
-    padding-top: 20px;
-    margin-bottom: 30px;
-    max-height: 75px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.question,.score{
-    font-size: 36px;
-    border-radius: 10px;
-    padding: var(--sidePadding);
-    height: var(--fullsize);
-    background-color: var(--gameTopBackground);
-}
-
-.score{
-    display: flex;
-    padding: 0px;
-    justify-content: flex-end;
-}
-
-.score-count,.point{
-    padding: 0px 10px;
-}
-
-.point{
-    border-radius: 10px;
-    background-color: var(--pointBackground);
-}
-
-.game{
-    position: relative;
-    width: var(--fullsize);
-    height: var(--fullsize);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 30px;
-    padding: var(--sidePadding);
+    background-color: var(--buttonBackgroundColor);
 }
 
 /*PopUp*/
-.popUp{
-    background-color: var(--popUpBackground);
-}
-
 .mark{
     width: 35%;
     height: auto;
@@ -271,10 +215,10 @@ body{
 
 .buttons{
     width: var(--fullsize);
-    /* max-width: 360px; */
+    max-width: 360px;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 /*This is the css for the second version
@@ -300,6 +244,7 @@ if useing this change the first version css to this*/
 .again, .home{
     position: relative;
     z-index: 12;
+    filter: invert(0%) sepia(100%) saturate(1352%) hue-rotate(87deg) brightness(109%) contrast(119%);
 }
 
 @keyframes animate{
@@ -344,8 +289,7 @@ if useing this change the first version css to this*/
 /*mobile*/
 @media screen and (max-width: 767px){
     .preview{
-        max-height: 260px;
-        width: auto;
+        max-height: 350px;
     }
 }
 
@@ -407,6 +351,5 @@ if useing this change the first version css to this*/
     /*Rotate*/
     .rotate{
         z-index: -10;
-        visibility: hidden;
     }
 }   
